@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 #custom imports
 import os
 import dj_database_url
+from dotenv import load_dotenv
+load_dotenv()
 
 from pathlib import Path
 
@@ -40,7 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'stelaapp.apps.StelaappConfig'
+    'crispy_forms',
+    'stelaapp.apps.StelaappConfig',
+    'userauth.apps.UserauthConfig',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +132,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Authentication redirection
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
