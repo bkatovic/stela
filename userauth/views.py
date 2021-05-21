@@ -7,6 +7,9 @@ from django.contrib import messages
 
 @transaction.atomic
 def register(request):
+    if request.user.is_authenticated:
+        return redirect("/")
+
     if request.method == 'POST':
         user_form = UserForm(request.POST)
         profile_form = ProfileForm(request.POST)
