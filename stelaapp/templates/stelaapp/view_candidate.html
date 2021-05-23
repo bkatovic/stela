@@ -1,0 +1,14 @@
+{% extends 'stelaapp/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    STELA - ViewJIORGVNIOGNIO3REKRLRNGVLR3NN
+{% endblock %}
+
+{% block content %}
+    <h1> {{candidate.profile.user.first_name}} {{candidate.profile.user.last_name}} </h1>
+    <h3>About me:</h3>
+    <p> {{candidate.aboutMe}}</p>
+    <h3>My solutions to student problems:</h3>
+    <p>{{candidate.solutions}}</p>
+{% endblock %}

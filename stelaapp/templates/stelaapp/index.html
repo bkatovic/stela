@@ -6,8 +6,10 @@
 
 {% block content %}
     <h1> Home Page </h1>
-    {% if user.is_authenticated  %}
-        <h3>Hello, {{user.username}}</h3>
-    {% endif %}
-
+    <h5>All candidates</h5>
+    <ul>
+    {% for candidate in candidates %}
+        <li><a href="/{{candidate.profile.user.username}}">{{candidate.profile.user.first_name}} {{candidate.profile.user.last_name}}</a></li>
+    {% endfor %}
+    </ul>
 {% endblock %}

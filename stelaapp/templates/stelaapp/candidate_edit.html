@@ -1,0 +1,17 @@
+{% extends 'stelaapp/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    STELA - Edit
+{% endblock %}
+
+{% block content %}
+    <h1> Edit Candidate Information for {{user.username}}</h1>
+    <form method="POST" class="form-group">
+        {% csrf_token %}
+        {{ candidate_form|crispy}}
+        <button type="submit" class="btn btn-success">Update</button>
+    </form>
+    <p>Want to update your profile info? You can do it <a href="/profile/edit">here</a>.</p>
+
+{% endblock %}

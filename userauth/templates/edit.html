@@ -1,0 +1,13 @@
+{% extends "stelaapp/base.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1> Edit Profile Information for {{user.username}}</h1>
+    <form method="POST" class="form-group">
+        {% csrf_token %}
+        {{ form|crispy}}
+        <button type="submit" class="btn btn-success">Update</button>
+    </form>
+{% endblock %}

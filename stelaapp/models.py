@@ -11,7 +11,7 @@ class University(models.Model):
     address = models.CharField(max_length=200)
 
     def __str__(self):
-        return "Name: {}, Address: {}".format(self.name, self.address)
+        return "{}".format(self.name)
 
 class Interests(models.Model):
     interestId = models.IntegerField(primary_key=True)
@@ -29,9 +29,6 @@ class List(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=50)
     isCandidate = models.BooleanField(default=False)
     studentIdNumber = models.CharField(max_length=11)
     faculty = models.CharField(max_length=200)
@@ -40,15 +37,15 @@ class Profile(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return "{} {}".format(self.first_name,self.last_name)
+        return "{}".format(self.studentIdNumber)
 
 class Candidate(models.Model):
-    candidateId = models.IntegerField(primary_key=True)
-    profileId = models.ForeignKey(Profile,on_delete=models.CASCADE)
-    interestsId = models.ForeignKey(Interests,on_delete=models.CASCADE)
-    listId = models.ForeignKey(List,on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to='cars')
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE, primary_key=True)
+    interestsId = models.ForeignKey(Interests,on_delete=models.CASCADE, null=True)
+    listId = models.ForeignKey(List,on_delete=models.CASCADE, null=True)
+    photo = models.ImageField(upload_to='cars', null=True)
     aboutMe = models.CharField(max_length=500)
+    solutions = models.CharField(max_length=500)
 
     def __str__(self):
         return "{}".format(self.aboutMe)

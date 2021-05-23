@@ -3,6 +3,7 @@ from .forms import UserForm
 from .forms import ProfileForm
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
 from django.contrib import messages
 
 @transaction.atomic
@@ -20,11 +21,29 @@ def register(request):
             profile_form.full_clean()
             profile_form.save() 
             messages.success(request, ('Your profile was successfully created!'))
+            login(request, user)
             return redirect('/')
     else:
         user_form = UserForm()
         profile_form = ProfileForm()
-    return render(request, "register/register.html", {
+    return render(request, "register.html", {
         'user_form': user_form,
         'profile_form': profile_form
+    })
+
+@login_required
+@transaction.atomic
+def edit(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your profile was successfully updated!')
+            return redirect('/')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = ProfileForm(instance=request.user.profile)
+    return render(request, 'edit.html', {
+        'form': form
     })

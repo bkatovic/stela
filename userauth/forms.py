@@ -10,18 +10,21 @@ from django.forms.widgets import DateInput
 class UserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username','password1','password2')
+        fields = ('username','email','first_name', 'last_name', 'password1','password2')
+
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         labels = {
-        'DoB': ('Date of birth'),
-        'university':('University')
+        'studentIdNumber': ('Student ID Number'),
+        'DoB': ('Date of Birth'),
+        'university':('University'),
+        'isCandidate': ('I am a candidate.'),
         }
         widgets = {
             'DoB': DateInput(attrs={'type': 'date'}), 
         }
-        fields = ('email', 'first_name', 'last_name','studentIdNumber','university', 'faculty','isCandidate','DoB')
+        fields = ('studentIdNumber','university', 'faculty','isCandidate','DoB')
         
         
