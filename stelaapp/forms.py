@@ -12,7 +12,8 @@ class CandidateForm(forms.ModelForm):
         model = Candidate
         labels = {
         'aboutMe': ('Tell us a little about yourself'),
-        'solutions': ("How will you solve students' problems?")
+        'solutions': ("How will you solve students' problems?"),
+        'position': ("What position are you candidating for?"),
         }
-        fields = ('aboutMe','solutions')
-        
+        fields = ('aboutMe','solutions', 'position')
+    

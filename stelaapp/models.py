@@ -39,6 +39,13 @@ class Profile(models.Model):
     def __str__(self):
         return "{}".format(self.studentIdNumber)
 
+class Candidate_Position(models.Model):
+    candidate_position_id = models.IntegerField(primary_key=True)
+    name = name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return "{}".format(self.name)
+
 class Candidate(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, primary_key=True)
     interestsId = models.ForeignKey(Interests,on_delete=models.CASCADE, null=True)
@@ -46,13 +53,29 @@ class Candidate(models.Model):
     photo = models.ImageField(upload_to='cars', null=True)
     aboutMe = models.CharField(max_length=500)
     solutions = models.CharField(max_length=500)
+    position = models.ForeignKey(Candidate_Position,on_delete=models.CASCADE)
+    votes = models.IntegerField(null=True, default=0)
 
     def __str__(self):
         return "{}".format(self.aboutMe)
 
+class Vote_Record(models.Model):
+    voter = models.ForeignKey(User, on_delete=models.CASCADE)
+    candidate = models.ForeignKey(Candidate, on_delete=models.CASCADE)
+    position = models.ForeignKey(Candidate_Position,on_delete=models.CASCADE)
     
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
     instance.profile.save()
+
+@receiver(post_save, sender=Profile)
+def decandidate(sender , instance , created , **kwargs):
+    if created:
+        return
+    #previous = Profile.objects.get(id=instance.id)
+    if instance.isCandidate == False:
+        Candidate.objects.filter(profile = instance.id).delete()
+        Vote_Record.objects.filter(candidate = instance.id).delete()
+    return
