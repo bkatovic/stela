@@ -7,7 +7,7 @@
 
 {% block content %}
     <h1> Edit Candidate Information for {{user.username}}</h1>
-    <form method="POST" class="form-group">
+    <form method="POST" class="form-group" enctype="multipart/form-data">
         {% csrf_token %}
         {{ candidate_form|crispy}}
         <button type="submit" class="btn btn-success">Update</button>

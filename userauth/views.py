@@ -22,7 +22,10 @@ def register(request):
             profile_form.save() 
             messages.success(request, ('Your profile was successfully created!'))
             login(request, user)
-            return redirect('/')
+            if profile_form.cleaned_data['isCandidate']:
+                return redirect('/candidate/edit')
+            else:
+                return redirect('/')
     else:
         user_form = UserForm()
         profile_form = ProfileForm()
@@ -39,7 +42,10 @@ def edit(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Your profile was successfully updated!')
-            return redirect('/')
+            if form.cleaned_data['isCandidate']:
+                return redirect('/candidate/edit')
+            else:
+                return redirect('/')
         else:
             messages.error(request, 'Please correct the error below.')
     else:

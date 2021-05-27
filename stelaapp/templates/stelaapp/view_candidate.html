@@ -13,6 +13,9 @@
     <p> {{candidate.aboutMe}}</p>
     <h3>My solutions to student problems</h3>
     <p>{{candidate.solutions}}</p>
+
+    <img src="{{candidate.photo.url}}">
+
     {% if canUserVote %}
         <a href="./vote"><button type="button" class="btn btn-outline-success">Vote</button></a>
     {% endif %}

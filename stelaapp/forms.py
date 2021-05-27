@@ -14,6 +14,7 @@ class CandidateForm(forms.ModelForm):
         'aboutMe': ('Tell us a little about yourself'),
         'solutions': ("How will you solve students' problems?"),
         'position': ("What position are you candidating for?"),
+        'photo': ("Upload your profile photo"),
         }
-        fields = ('aboutMe','solutions', 'position')
+        fields = ('aboutMe','solutions', 'position', 'photo')
     

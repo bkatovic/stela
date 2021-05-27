@@ -16,7 +16,7 @@ def candidate_edit(request):
     profile = Profile.objects.get(user = request.user)
     if profile.isCandidate:
         if request.method == 'POST':
-            candidate_form = CandidateForm(request.POST)
+            candidate_form = CandidateForm(request.POST, request.FILES)
             if candidate_form.is_valid():
                 candidate = candidate_form.save(commit=False)
                 candidate.profile = request.user.profile

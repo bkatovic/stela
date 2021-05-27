@@ -18,6 +18,8 @@ from django.urls import include,path
 from userauth import views as userauth_views
 from django.contrib.auth.views import LoginView
 
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,3 +29,5 @@ urlpatterns = [
     path('', include("django.contrib.auth.urls")),
     path('', include('stelaapp.urls')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

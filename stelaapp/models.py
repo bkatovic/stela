@@ -50,11 +50,12 @@ class Candidate(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE, primary_key=True)
     interestsId = models.ForeignKey(Interests,on_delete=models.CASCADE, null=True)
     listId = models.ForeignKey(List,on_delete=models.CASCADE, null=True)
-    photo = models.ImageField(upload_to='cars', null=True)
+    photo = models.ImageField(null=True, blank=True)
     aboutMe = models.CharField(max_length=500)
     solutions = models.CharField(max_length=500)
     position = models.ForeignKey(Candidate_Position,on_delete=models.CASCADE)
     votes = models.IntegerField(null=True, default=0)
+    photo = models.ImageField(default="default/default_photo.png", null=True, blank=True)
 
     def __str__(self):
         return "{}".format(self.aboutMe)
@@ -71,7 +72,7 @@ def update_user_profile(sender, instance, created, **kwargs):
     instance.profile.save()
 
 @receiver(post_save, sender=Profile)
-def decandidate(sender , instance , created , **kwargs):
+def decandidate(sender, instance , created , **kwargs):
     if created:
         return
     #previous = Profile.objects.get(id=instance.id)
@@ -79,3 +80,4 @@ def decandidate(sender , instance , created , **kwargs):
         Candidate.objects.filter(profile = instance.id).delete()
         Vote_Record.objects.filter(candidate = instance.id).delete()
     return
+
