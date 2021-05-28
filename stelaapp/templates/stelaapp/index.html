@@ -5,11 +5,37 @@
 {% endblock %}
 
 {% block content %}
-    <h1> Home Page </h1>
-    <h5>All candidates</h5>
-    <ul>
+<style>
+    .card{
+        border-radius: 4px;
+        background: #fff;
+        box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+        transition: .3s transform cubic-bezier(.155,1.105,.295,1.12),.3s box-shadow,.3s -webkit-transform cubic-bezier(.155,1.105,.295,1.12);
+        cursor: pointer;
+    }
+    .card:hover{
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+    }
+</style>
+
+<h1> Home Page </h1>
+<h5>All candidates</h5>
+
+<div class="row">
     {% for candidate in candidates %}
-        <li><a href="/{{candidate.profile.user.username}}">{{candidate.profile.user.first_name}} {{candidate.profile.user.last_name}}</a></li>
+    <div class="col-auto mt-3 mb-3">
+        <a href="/{{candidate.profile.user.username}}" class="text-decoration-none text-body">
+            <div class="card h-100" style="width: 18rem;">
+                <img class="card-img-top" src="{{candidate.get_photo}}" alt="Candidate photo">
+                <div class="card-body">
+                    <h5 class="card-title">{{candidate.profile.user.first_name}} {{candidate.profile.user.last_name}}</h5>
+                    <h6>Candidate for {{candidate.position}}</h6>
+                    <p class="card-text">{{candidate.profile.faculty}}</p>
+                </div>
+            </div>
+        </a>
+    </div>
     {% endfor %}
-    </ul>
+</div>
 {% endblock %}

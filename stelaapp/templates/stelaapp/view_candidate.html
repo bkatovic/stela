@@ -6,21 +6,30 @@
 {% endblock %}
 
 {% block content %}
-    <h1> {{candidate.profile.user.first_name}} {{candidate.profile.user.last_name}} </h1>
-    <h3>Candidate for</h3>
-    {{candidate.position.name}}
-    <h3>About me</h3>
-    <p> {{candidate.aboutMe}}</p>
-    <h3>My solutions to student problems</h3>
-    <p>{{candidate.solutions}}</p>
+<div class="container m-3">
+    <div class="row">
+      <div class="col-sm-5">
+        <img class="img-thumbnail w-100" src="{{candidate.get_photo}}">
+        <h1>{{candidate.profile.user.first_name}} {{candidate.profile.user.last_name}}</h1>
+        <p>{{candidate.profile.faculty}}</p>
+      </div>
 
-    <img src="{{candidate.photo.url}}">
 
-    {% if canUserVote %}
-        <a href="./vote"><button type="button" class="btn btn-outline-success">Vote</button></a>
-    {% endif %}
-    {% if didUserVote %}
-        <a href="./unvote"><button type="button" class="btn btn-outline-danger">Unvote</button></a>
-    {% endif %}
+      <div class="col-sm">
+        <h3>Candidate for</h3>
+        <p>{{candidate.position.name}}</p>
+        <h3>About me</h3>
+        <p> {{candidate.aboutMe}}</p>
+        <h3>My solutions to student problems</h3>
+        <p>{{candidate.solutions}}</p>
 
+        {% if canUserVote %}
+            <a href="./vote"><button type="button" class="btn btn-outline-success">Vote</button></a>
+        {% endif %}
+        {% if didUserVote %}
+            <a href="./unvote"><button type="button" class="btn btn-outline-danger">Unvote</button></a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 {% endblock %}

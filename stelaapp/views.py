@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from .models import Candidate, Profile, Vote_Record
 
 def index(request):
-    candidates = Candidate.objects.all()
+    candidates = Candidate.objects.all().order_by("position")
     return render(request, "stelaapp/index.html", {"candidates": candidates})
 
 @login_required

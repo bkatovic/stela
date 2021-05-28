@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.templatetags.static import static
 
 class University(models.Model):
     universityid = models.IntegerField(primary_key=True)
@@ -55,10 +56,12 @@ class Candidate(models.Model):
     solutions = models.CharField(max_length=500)
     position = models.ForeignKey(Candidate_Position,on_delete=models.CASCADE)
     votes = models.IntegerField(null=True, default=0)
-    photo = models.ImageField(default="default/default_photo.png", null=True, blank=True)
+    photo = models.ImageField(null=True, blank=True)
 
-    def __str__(self):
-        return "{}".format(self.aboutMe)
+    def get_photo(self):
+        if self.photo:
+            return self.photo.url
+        return static("images/default_photo.png")
 
 class Vote_Record(models.Model):
     voter = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -81,3 +84,12 @@ def decandidate(sender, instance , created , **kwargs):
         Vote_Record.objects.filter(candidate = instance.id).delete()
     return
 
+# @receiver(post_save, sender=Candidate)
+# def revert_photo_to_default_after_delete(sender, instance , created , **kwargs):
+#     if created:
+#         return
+#     #previous = Profile.objects.get(id=instance.id)
+#     if not instance.photo:
+#         Candidate.objects.filter(profile = instance.id).delete()
+#         Vote_Record.objects.filter(candidate = instance.id).delete()
+#     return
