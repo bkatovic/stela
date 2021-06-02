@@ -11,6 +11,7 @@ def detect_card(image_name):
     image = np.array(img)
     image = imutils.resize(image, height=600)
     original = image.copy()
+    
      
     # Edge detection
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -99,6 +100,6 @@ def search_pesel(image_name) :
                 after_process.save('pesel.jpg')
                 
 if __name__=="__main__":
-    card=detect_card("3.jpg")
+    card=detect_card("2.jpg")
     search_pesel(card)
         
