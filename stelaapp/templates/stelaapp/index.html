@@ -20,6 +20,11 @@
 </style>
 
 <h1> Home Page </h1>
+{% if noPesel %}
+<div class="alert alert-danger" role="alert">
+    Please verify your identity by scanning your student ID card <a href="/profile/verify">here</a>.
+</div>
+{% endif %}
 <h5>All candidates</h5>
 
 <div class="row">

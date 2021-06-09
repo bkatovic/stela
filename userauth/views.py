@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from .forms import UserForm
+from .forms import UploadPeselForm
 from .forms import ProfileForm
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.contrib import messages
+from .image_processing.card import detect_card, search_pesel
+from stelaapp.models import Profile
 
 @transaction.atomic
 def register(request):
@@ -35,7 +38,6 @@ def register(request):
     })
 
 @login_required
-@transaction.atomic
 def edit(request):
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=request.user.profile)
@@ -53,3 +55,34 @@ def edit(request):
     return render(request, 'edit.html', {
         'form': form
     })
+
+@login_required
+def upload_pesel(request):
+    if request.method == 'POST':
+        if "upload-form" in request.POST:
+            print("helllllo")
+            form = UploadPeselForm(request.POST, request.FILES)
+            if form.is_valid():
+                photo = request.FILES['id_photo']
+                card = detect_card(photo)
+                pesel = search_pesel(card)
+                request.pesel = pesel
+                if pesel != None and len(pesel) == 11:
+                    return render(request, 'confirm_pesel.html', {
+                        'pesel': pesel
+                    })
+                else:
+                    error_msg = "PESEL was not recognized! Please try again." 
+                    return render(request, 'upload_pesel.html', {'form': form, 'error_msg': error_msg}) 
+        elif "confirm-yes" in request.POST:
+                profile = Profile.objects.get(user = request.user)
+                profile.pesel = request.POST.get("pesel")
+                profile.save()
+                messages.success(request, ('Your PESEL was successfully verified!'))
+                return redirect("/")
+        elif "confirm-no" in request.POST:
+            form = UploadPeselForm()
+            return render(request, 'upload_pesel.html', {'form': form})
+    else:
+        form = UploadPeselForm()
+        return render(request, 'upload_pesel.html', {'form': form})

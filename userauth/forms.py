@@ -27,4 +27,10 @@ class ProfileForm(forms.ModelForm):
         }
         fields = ('studentIdNumber','university', 'faculty','isCandidate','DoB')
         
-        
+class UploadPeselForm(forms.Form):
+    id_photo = forms.ImageField()
+
+    labels = {
+       'id_photo': ('Upload a photo of your student ID card'),
+    }
+    fields = ('id_photo',)

@@ -9,7 +9,12 @@ from .models import Candidate, Profile, Vote_Record
 
 def index(request):
     candidates = Candidate.objects.all().order_by("position", "profile__user__last_name", "profile__user__first_name")
-    return render(request, "stelaapp/index.html", {"candidates": candidates})
+    noPesel = False
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user = request.user)
+        if profile.pesel is None:
+            noPesel = True
+    return render(request, "stelaapp/index.html", {"candidates": candidates, "noPesel": noPesel})
 
 def election_results(request):
     candidates = Candidate.objects.all().order_by("-votes")
