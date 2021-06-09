@@ -3,6 +3,6 @@ libxrender1
 libfontconfig1
 libice6
 libgl1
-libarchive1
+libarchive
 tesseract-ocr
 tesseract-ocr-eng
