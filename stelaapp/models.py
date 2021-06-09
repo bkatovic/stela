@@ -32,13 +32,11 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     isCandidate = models.BooleanField(default=False)
     studentIdNumber = models.CharField(max_length=11)
+    pesel = models.CharField(max_length=11, null=True)
     faculty = models.CharField(max_length=200)
     DoB = models.DateField(null=True,blank=True)
     university = models.ForeignKey(University,on_delete=models.CASCADE,db_column='university', null=True)
     created_date = models.DateTimeField(default=timezone.now)
-
-    def __str__(self):
-        return "{}".format(self.studentIdNumber)
 
 class Candidate_Position(models.Model):
     candidate_position_id = models.IntegerField(primary_key=True)

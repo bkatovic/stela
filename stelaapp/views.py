@@ -8,8 +8,17 @@ from django.contrib.auth.models import User
 from .models import Candidate, Profile, Vote_Record
 
 def index(request):
-    candidates = Candidate.objects.all().order_by("position")
-    return render(request, "stelaapp/index.html", {"candidates": candidates})
+    candidates = Candidate.objects.all().order_by("position", "profile__user__last_name", "profile__user__first_name")
+    noPesel = False
+    if request.user.is_authenticated:
+        profile = Profile.objects.get(user = request.user)
+        if profile.pesel is None:
+            noPesel = True
+    return render(request, "stelaapp/index.html", {"candidates": candidates, "noPesel": noPesel})
+
+def election_results(request):
+    candidates = Candidate.objects.all().order_by("-votes")
+    return render(request, "stelaapp/results.html", {"candidates": candidates})
 
 @login_required
 def candidate_edit(request):
@@ -34,10 +43,8 @@ def candidate_edit(request):
         return redirect("/profile/edit")
 
 def candidate_view(request, username):
-    user = get_object_or_404(User, username=username)
-    profile = get_object_or_404(Profile, user=user)
-    candidate = get_object_or_404(Candidate, profile = profile)
-
+    candidate = get_object_or_404(Candidate, profile__user__username = username)
+    
     canUserVote = False
     didUserVote = False
 
@@ -55,9 +62,7 @@ def candidate_view(request, username):
 
 @login_required
 def vote(request, username):
-    user = get_object_or_404(User, username=username)
-    profile = get_object_or_404(Profile, user=user)
-    candidate = get_object_or_404(Candidate, profile = profile)
+    candidate = get_object_or_404(Candidate, profile__user__username = username)
 
     count = Vote_Record.objects.filter(voter=request.user, position = candidate.position).count()
     if count == 0:
@@ -71,9 +76,7 @@ def vote(request, username):
 
 @login_required
 def unvote(request, username):
-    user = get_object_or_404(User, username=username)
-    profile = get_object_or_404(Profile, user=user)
-    candidate = get_object_or_404(Candidate, profile = profile)
+    candidate = get_object_or_404(Candidate, profile__user__username = username)
 
     count = Vote_Record.objects.filter(voter=request.user, candidate = candidate).delete()[0]
     if count > 0:

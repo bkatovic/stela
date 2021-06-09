@@ -7,7 +7,7 @@ For more information on this file, see
 https://docs.djangoproject.com/en/3.1/topics/settings/
 
 For the full list of settings and their values, see
-https://docs.djangoproject.com/en/3.1/ref/settings/
+https://docs.djangoproject.com/en/3.1/ref/settings/f
 """
 # Custom imports
 import os
@@ -141,6 +141,7 @@ LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL='/login'
 
 # S3 BUCKETS CONFIG
+AWS_DEFAULT_ACL = None
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')

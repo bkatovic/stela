@@ -1,0 +1,14 @@
+{% extends "stelaapp/base.html" %}
+
+{% block title %}Confirm ID{% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h3>Is {{pesel}} your PESEL number?</h3>
+    <form method="POST" class="form-group">
+        {% csrf_token %}
+        <input type="hidden" id="pesel" name="pesel" value="{{pesel}}">
+        <button type="submit" class="btn btn-success" name="confirm-yes">Yes</button>
+        <button type="submit" class="btn btn-danger" name="confirm-no">No</button>
+    </form>
+{% endblock %}
