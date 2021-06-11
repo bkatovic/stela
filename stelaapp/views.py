@@ -5,7 +5,7 @@ from .forms import CandidateForm
 from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
-from .models import Candidate, Profile, Vote_Record
+from .models import Candidate, Profile, Vote_Record, Candidate_Position
 
 def index(request):
     candidates = Candidate.objects.all().order_by("position", "profile__user__last_name", "profile__user__first_name")
@@ -17,8 +17,15 @@ def index(request):
     return render(request, "stelaapp/index.html", {"candidates": candidates, "noPesel": noPesel})
 
 def election_results(request):
-    candidates = Candidate.objects.all().order_by("-votes")
-    return render(request, "stelaapp/results.html", {"candidates": candidates})
+    positions = Candidate_Position.objects.all()
+    # candidates = Candidate.objects.all().order_by("-votes")
+    candidates_by_position = {}
+    for position in positions:
+        candidates = Candidate.objects.filter(position = position).order_by("-votes")
+        if candidates:
+            candidates_by_position[position] = candidates
+    print(candidates_by_position)
+    return render(request, "stelaapp/results.html", {"candidates_by_position": candidates_by_position})
 
 @login_required
 def candidate_edit(request):
